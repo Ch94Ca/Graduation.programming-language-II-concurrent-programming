@@ -31,3 +31,6 @@
 *.out
 *.app
 exe
+
+#text files
+*.txt
