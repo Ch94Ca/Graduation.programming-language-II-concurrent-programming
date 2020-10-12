@@ -25,8 +25,8 @@ int main(int argc, char **argv)
 {
         unsigned int processQty = atoi(argv[1]);
 
-        pid_t newProcessPID;
-        pid_t *childpid;
+        pid_t newProcessPID = getpid();
+        pid_t *childpid = nullptr;
 
         try
         {
@@ -40,63 +40,46 @@ int main(int argc, char **argv)
 
         } // end catch
 
-        newProcessPID = fork();
-        childpid[0] = newProcessPID;
-
-        // checks if the fork() was successfully executed
-        if(newProcessPID >= 0)
+        for (unsigned int i = 0; i < processQty; i++)
         {
-                for(unsigned int i = 1; i < processQty; i++)
+                if (newProcessPID != 0)
                 {
-                        if(newProcessPID != 0)
+                        newProcessPID = fork();
+
+                        if (newProcessPID >= 0)
                         {
-                                newProcessPID = fork();
+                                childpid[i] = newProcessPID;
 
-                                if(newProcessPID >= 0)
-                                {
-                                        childpid[i] = newProcessPID;
-
-                                } // end if
-                                else
-                                {
-                                        cout << "Fork failed. " << endl;
-                                        return 1;
-
-                                } // end if
+                        } // end if
+                        else
+                        {
+                                cout << "Fork failed. " << endl;
+                                return 1;
 
                         } // end if
 
-                } // end for
+                } // end if
 
-                if(newProcessPID != 0)
-                {
-                        cout << "Iam the process, my PID: " << getpid() << endl
-                        << "My children PID's: " << endl << endl;
+        } // end for
 
-                        for(unsigned int i = 0; i < processQty; i++)
-                        {
-                                cout << "Child " << i + 1 << " PID: " << childpid[i] << endl;
-
-                        } // end for
-
-                }
-                
-                // proposital to see the children process in TOP
-                while(true)
-                {
-
-
-                }
-
-
-        } // end if
-        else
+        if (newProcessPID != 0)
         {
-                cout << "Fork failed. " << endl;
-                return 1;
+                cout << "Iam the process, my PID: " << getpid() << endl
+                     << "My children PID's: " << endl
+                     << endl;
 
-        } // end else
+                for (unsigned int i = 0; i < processQty; i++)
+                {
+                        cout << "Child " << i + 1 << " PID: " << childpid[i] << endl;
+
+                } // end for
+        }
+
+        // proposital to see the children process in TOP
+        while (true)
+        {
+        }
 
         return 0;
-        
-} // End Main
+
+} // end Main
