@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
         for (unsigned int i = 0; i < rndNumbersQty; i++)
         {
-                rndNumbers[i] = rand() % 10;
+                rndNumbers[i] = rand() % 100;
 
         } // end for
 
