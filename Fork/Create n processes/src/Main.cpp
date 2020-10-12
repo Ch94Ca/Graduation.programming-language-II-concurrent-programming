@@ -26,7 +26,19 @@ int main(int argc, char **argv)
         unsigned int processQty = atoi(argv[1]);
 
         pid_t newProcessPID;
-        pid_t *childpid = new pid_t[processQty - 1];
+        pid_t *childpid;
+
+        try
+        {
+                childpid = new pid_t[processQty - 1];
+
+        } // end try
+        catch (bad_alloc &)
+        {
+                std::cout << "Memory allocation failure." << std::endl;
+                return 1;
+
+        } // end catch
 
         newProcessPID = fork();
         childpid[0] = newProcessPID;
@@ -51,7 +63,6 @@ int main(int argc, char **argv)
                                         return 1;
 
                                 } // end if
-                                
 
                         } // end if
 

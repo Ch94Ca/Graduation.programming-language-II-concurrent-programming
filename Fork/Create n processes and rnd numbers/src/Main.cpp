@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <iostream>
+#include <fstream>
 #include <new>
 
 using namespace std;
@@ -24,9 +25,22 @@ using namespace std;
 int main(int argc, char **argv)
 {
         unsigned int processQty = atoi(argv[1]);
+        unsigned int rndNumbersQty = atoi(argv[2]);
 
         pid_t newProcessPID;
-        pid_t *childpid = new pid_t[processQty - 1];
+        pid_t *childpid;
+
+        try
+        {
+                childpid = new pid_t[processQty - 1];
+
+        } // end try
+        catch (bad_alloc &)
+        {
+                std::cout << "Memory allocation failure." << std::endl;
+                return 1;
+
+        } // end catch
 
         newProcessPID = fork();
         childpid[0] = newProcessPID;
@@ -48,44 +62,64 @@ int main(int argc, char **argv)
                                 else
                                 {
                                         cout << "Fork failed. " << endl;
+                                        delete childpid;
                                         return 1;
 
                                 } // end if
                                 
-
                         } // end if
 
                 } // end for
 
-                if(newProcessPID != 0)
+                srand(time(NULL) + getpid());
+
+                int *rndNumbers;
+
+                try
                 {
-                        cout << "Iam the process, my PID: " << getpid() << endl
-                        << "My children PID's: " << endl << endl;
+                        rndNumbers = new int[rndNumbersQty];
 
-                        for(unsigned int i = 0; i < processQty; i++)
-                        {
-                                cout << "Child " << i + 1 << " PID: " << childpid[i] << endl;
+                } // end try
+                catch (bad_alloc &)
+                {
+                        std::cout << "Memory allocation failure." << std::endl;
+                        return 1;
 
-                        } // end for
+                } // end catch
 
-                }
+                for(unsigned int i = 0; i < rndNumbersQty; i++)
+                {
+                        rndNumbers[i] = rand() % 10;
+
+                } // end for
+
+                string fileName = "Rnd numbers created by procces with PID:  ";
+                fileName += to_string(getpid());
+                fileName += ".txt";
+
+                ofstream file;
+                file.open(fileName);
                 
-                // proposital to see the children process in TOP
-                while(true)
+                for(unsigned int i = 0; i < rndNumbersQty; i++)
                 {
+                        file << to_string(rndNumbers[i]) << endl;
 
+                } // end for
 
-                }
+                file.close();
 
+                cout << "Created file: " << fileName << endl;
 
         } // end if
         else
         {
                 cout << "Fork failed. " << endl;
+                delete childpid;
                 return 1;
 
         } // end else
 
+        delete childpid;
         return 0;
         
 } // End Main
