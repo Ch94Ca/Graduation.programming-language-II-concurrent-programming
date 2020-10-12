@@ -136,8 +136,7 @@ int main(int argc, char **argv)
         } // end if
         else
         {       
-                cout << endl << "Sum of the rnd numbers genereted by parent process: " << sum << endl;
-                cout << "Sum of the rnd numbers genereted by children processes: " << endl << endl;
+                cout << endl << "Sum of the rnd numbers genereted by children processes: " << endl << endl;
 
                 for(unsigned int i = 0; i < processQty; i++)
                 {
@@ -145,6 +144,7 @@ int main(int argc, char **argv)
 
                 } // end for
 
+                cout << endl << "Sum of the rnd numbers genereted by parent process: " << sum << endl << endl;
 
         } // end else
 
