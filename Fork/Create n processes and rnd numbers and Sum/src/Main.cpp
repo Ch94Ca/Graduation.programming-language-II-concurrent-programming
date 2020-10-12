@@ -127,8 +127,6 @@ int main(int argc, char **argv)
         cout << "Created file: " << fileName << endl;
         cout << "Sum: " << sum << endl;
 
-        delete childpid;
-
         if(newProcessPID == 0)
         {       
                 exit(sum);
@@ -140,13 +138,16 @@ int main(int argc, char **argv)
 
                 for(unsigned int i = 0; i < processQty; i++)
                 {
-                        cout << "Child " << (i + 1) << " sum: " << WEXITSTATUS(childSum[i]) << endl;
+                        cout << "Child " << (i + 1) << ", PID (" << childpid[i] << ")" 
+                             << " sum: " << WEXITSTATUS(childSum[i]) << endl;
 
                 } // end for
 
                 cout << endl << "Sum of the rnd numbers genereted by parent process: " << sum << endl << endl;
 
         } // end else
+
+        delete childpid;
 
         return 0;
 
