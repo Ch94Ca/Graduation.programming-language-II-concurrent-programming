@@ -106,6 +106,8 @@ int main(int argc, char **argv)
 
                 } // end for
 
+                delete rndNumbers;
+
                 file.close();
 
                 cout << "Created file: " << fileName << endl;
